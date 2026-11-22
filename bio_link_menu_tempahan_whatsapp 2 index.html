@@ -1,0 +1,1667 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manisan & Dessert — Bio-Link, Galeri & Tempahan WhatsApp</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              bgStart: '#EAF4FF',
+              bgEnd: '#F8FBFF',
+              primary: '#3B82F6',
+              deep: '#1D4ED8',
+              soft: '#DBEAFE',
+              border: '#BFDBFE',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Latar belakang gradien kebiruan lembut (#EAF4FF ke #F8FBFF) */
+    body {
+      background: linear-gradient(180deg, #EAF4FF 0%, #F2F8FF 45%, #F8FBFF 100%);
+      min-height: 100vh;
+    }
+
+    /* Sembunyikan scrollbar tetapi kekalkan fungsi leret (swipe/scroll) yang lancar */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Animasi kemas untuk modal & notifikasi */
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    .animate-modal {
+      animation: fadeSlideUp 0.22s ease-out forwards;
+    }
+
+    @keyframes fadeDown {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -12px);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+    }
+    .animate-toast {
+      animation: fadeDown 0.25s ease-out forwards;
+    }
+  </style>
+</head>
+<body class="text-slate-800 antialiased pb-32 selection:bg-blue-200 selection:text-blue-900">
+
+  <!-- =========================================================================
+       DATA KONFIGURASI TERBINA DALAM (JSON)
+       Nota: Apabila anda menekan "Muat Turun Fail HTML Terkini", semua perubahan
+       kedai, gambar galeri, dan senarai menu akan disimpan terus ke dalam tag ini.
+  ========================================================================== -->
+  <script id="store-config-data" type="application/json">
+  {
+    "pin": "1234",
+    "store": {
+      "name": "Manisan & Dessert",
+      "tagline": "Donat Gebu • Bomboloni • Mochi • Dubai Chewy",
+      "scheduleLocation": "Pickup di Pasar / COD • 3:00 Petang – 7:00 Malam",
+      "whatsapp": "60123456789",
+      "tiktok": "https://tiktok.com",
+      "instagram": "https://instagram.com",
+      "logo": ""
+    },
+    "gallery": [
+      {
+        "id": "gal_1",
+        "menuId": "donat",
+        "title": "Donat Gebu Klasik",
+        "price": 2.50,
+        "description": "Donat lembut gebu disalut gula halus premium, digoreng segar setiap petang.",
+        "image": "https://placehold.co/600x450/DBEAFE/1D4ED8?text=Donat+Gebu+RM2.50"
+      },
+      {
+        "id": "gal_2",
+        "menuId": "bomboloni",
+        "title": "Bomboloni Inti Melimpah",
+        "price": 2.50,
+        "description": "Bomboloni gebu dengan pilihan inti coklat leleh, strawberi, dan vanila kastard.",
+        "image": "https://placehold.co/600x450/E0F2FE/1D4ED8?text=Bomboloni+RM2.50"
+      },
+      {
+        "id": "gal_3",
+        "menuId": "mochi_bite",
+        "title": "Mochi Bite Pek",
+        "price": 5.00,
+        "description": "Potongan mochi kenyal bersaiz mini bersama sos berkrim dan taburan serbuk biskut.",
+        "image": "https://placehold.co/600x450/DBEAFE/1E40AF?text=Mochi+Bite+RM5.00"
+      },
+      {
+        "id": "gal_4",
+        "menuId": "mochi",
+        "title": "Mochi Lembut (Promo 3 RM10)",
+        "price": 3.50,
+        "description": "Mochi lembut berinti penuh. Dapatkan harga kombo istimewa RM10 untuk setiap 3 biji!",
+        "image": "https://placehold.co/600x450/EFF6FF/1D4ED8?text=Mochi+3+RM10"
+      },
+      {
+        "id": "gal_5",
+        "menuId": "dubai_chewy",
+        "title": "Dubai Chewy Kunafa Pistachio",
+        "price": 8.00,
+        "description": "Pencuci mulut viral rangup kunafa pistachio berpadu coklat premium yang kaya rasa.",
+        "image": "https://placehold.co/600x450/DBEAFE/1D4ED8?text=Dubai+Chewy+RM8.00"
+      }
+    ],
+    "menu": [
+      {
+        "id": "donat",
+        "name": "Donat",
+        "price": 2.50,
+        "subtitle": "RM 2.50 / biji",
+        "badge": "",
+        "isPromo3For10": false,
+        "soldOut": false,
+        "image": "https://placehold.co/200x200/DBEAFE/1D4ED8?text=Donat"
+      },
+      {
+        "id": "bomboloni",
+        "name": "Bomboloni",
+        "price": 2.50,
+        "subtitle": "RM 2.50 / biji",
+        "badge": "",
+        "isPromo3For10": false,
+        "soldOut": false,
+        "image": "https://placehold.co/200x200/E0F2FE/1D4ED8?text=Bomboloni"
+      },
+      {
+        "id": "mochi_bite",
+        "name": "Mochi Bite",
+        "price": 5.00,
+        "subtitle": "RM 5.00 / pek",
+        "badge": "",
+        "isPromo3For10": false,
+        "soldOut": false,
+        "image": "https://placehold.co/200x200/DBEAFE/1E40AF?text=Mochi+Bite"
+      },
+      {
+        "id": "mochi",
+        "name": "Mochi",
+        "price": 3.50,
+        "subtitle": "RM 3.50 / biji",
+        "badge": "Promo: Beli 3 RM 10.00",
+        "isPromo3For10": true,
+        "soldOut": false,
+        "image": "https://placehold.co/200x200/EFF6FF/1D4ED8?text=Mochi"
+      },
+      {
+        "id": "dubai_chewy",
+        "name": "Dubai Chewy",
+        "price": 8.00,
+        "subtitle": "RM 8.00 / unit",
+        "badge": "Hot Selling",
+        "isPromo3For10": false,
+        "soldOut": false,
+        "image": "https://placehold.co/200x200/DBEAFE/1D4ED8?text=Dubai+Chewy"
+      }
+    ]
+  }
+  </script>
+
+  <!-- =========================================================================
+       NOTIFIKASI TOAST (PENGGANTI ALERT)
+  ========================================================================== -->
+  <div id="toastBox" class="fixed top-4 left-1/2 -translate-x-1/2 z-[100] hidden w-[92%] max-w-sm pointer-events-none">
+    <div class="bg-slate-900/95 backdrop-blur-md text-white px-4 py-3.5 rounded-2xl shadow-xl border border-blue-300/30 flex items-center gap-3 text-sm font-medium">
+      <span class="flex-shrink-0 w-7 h-7 rounded-full bg-blue-500/20 text-blue-300 flex items-center justify-center">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+      </span>
+      <span id="toastMessage" class="leading-snug">Notifikasi sistem</span>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       BEKAS UTAMA LAMAN WEB (MOBILE-FIRST RESPONSIVE)
+  ========================================================================== -->
+  <main class="max-w-lg mx-auto px-4 pt-7">
+
+    <!-- 1. HEADER & BIO-LINK KEDAI -->
+    <header class="bg-white/90 backdrop-blur-md rounded-3xl p-6 border border-blue-100 shadow-sm shadow-blue-200/40 text-center mb-6">
+      <!-- Avatar / Logo Bulat Kedai -->
+      <div class="relative inline-block mb-3.5">
+        <div class="w-24 h-24 rounded-full bg-gradient-to-tr from-blue-500 via-blue-300 to-blue-100 p-1 shadow-md shadow-blue-200 mx-auto">
+          <div id="storeLogoContainer" class="w-full h-full rounded-full bg-white overflow-hidden flex flex-col items-center justify-center border border-blue-50">
+            <!-- Diisi oleh JS (Logo custom atau ikon lalai) -->
+          </div>
+        </div>
+        <span class="absolute bottom-1 right-1 bg-emerald-500 border-2 border-white w-4 h-4 rounded-full shadow-xs" title="Sedia Menerima Tempahan"></span>
+      </div>
+
+      <!-- Nama Kedai & Tagline -->
+      <h1 id="displayStoreName" class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+        Manisan & Dessert
+      </h1>
+      <p id="displayStoreTagline" class="text-sm text-slate-600 mt-1 font-medium">
+        Donat Gebu • Bomboloni • Mochi • Dubai Chewy
+      </p>
+
+      <!-- Lencana Waktu Operasi & Lokasi -->
+      <div class="mt-3 inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-blue-700 bg-blue-50/90 px-3.5 py-1.5 rounded-full border border-blue-200/80">
+        <svg class="w-3.5 h-3.5 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+        </svg>
+        <span id="displayScheduleLocation">Pickup di Pasar / COD • 3:00 Petang – 7:00 Malam</span>
+      </div>
+
+      <!-- Pautan Pantas Media Sosial (WhatsApp, TikTok, Instagram) -->
+      <div class="grid grid-cols-3 gap-2.5 mt-5">
+        <a id="linkWhatsAppDirect" href="https://wa.me/60123456789" target="_blank" rel="noopener noreferrer"
+           class="flex items-center justify-center gap-1.5 bg-blue-50/80 hover:bg-blue-100 active:scale-[0.98] text-blue-700 font-bold text-xs py-2.5 px-3 rounded-full border border-blue-200 transition">
+          <svg class="w-4 h-4 text-emerald-600 fill-current flex-shrink-0" viewBox="0 0 24 24">
+            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/>
+          </svg>
+          <span>WhatsApp</span>
+        </a>
+
+        <a id="linkTikTok" href="https://tiktok.com" target="_blank" rel="noopener noreferrer"
+           class="flex items-center justify-center gap-1.5 bg-blue-50/80 hover:bg-blue-100 active:scale-[0.98] text-blue-700 font-bold text-xs py-2.5 px-3 rounded-full border border-blue-200 transition">
+          <svg class="w-4 h-4 text-blue-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z"></path>
+          </svg>
+          <span>TikTok</span>
+        </a>
+
+        <a id="linkInstagram" href="https://instagram.com" target="_blank" rel="noopener noreferrer"
+           class="flex items-center justify-center gap-1.5 bg-blue-50/80 hover:bg-blue-100 active:scale-[0.98] text-blue-700 font-bold text-xs py-2.5 px-3 rounded-full border border-blue-200 transition">
+          <svg class="w-4 h-4 text-blue-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect width="20" height="20" x="2" y="2" rx="5" ry="5" stroke-width="2"></rect>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke-width="2" stroke-linecap="round"></line>
+          </svg>
+          <span>Instagram</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- 2. GALERI GAMBAR MAKANAN (SCROLLABLE REFERENCE GALLERY) -->
+    <section id="gallerySection" class="mb-7">
+      <div class="flex items-center justify-between mb-3 px-1">
+        <div>
+          <h2 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
+            <span class="w-2 h-5 rounded-full bg-blue-500 inline-block"></span>
+            Galeri & Rujukan Menu
+          </h2>
+          <p class="text-xs text-slate-500 mt-0.5">Leret ke tepi atau klik gambar untuk lihat saiz penuh</p>
+        </div>
+
+        <!-- Butang Kawalan Leret Pantas untuk Desktop/Tablet -->
+        <div class="flex items-center gap-1.5">
+          <button type="button" onclick="scrollGallery(-240)" aria-label="Leret Kiri"
+                  class="w-8 h-8 rounded-full bg-white border border-blue-200 text-blue-700 hover:bg-blue-50 flex items-center justify-center shadow-2xs transition cursor-pointer">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+          </button>
+          <button type="button" onclick="scrollGallery(240)" aria-label="Leret Kanan"
+                  class="w-8 h-8 rounded-full bg-white border border-blue-200 text-blue-700 hover:bg-blue-50 flex items-center justify-center shadow-2xs transition cursor-pointer">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Trek Horizontal Smooth Scroll dengan Scroll-Snap -->
+      <div id="galleryContainer"
+           class="flex gap-3.5 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar pb-2 px-0.5">
+        <!-- Kad galeri dijana secara dinamik oleh JavaScript -->
+      </div>
+    </section>
+
+    <!-- 3. SENARAI MENU INTERAKTIF & KIRAAN PROMO AUTOMATIK -->
+    <section class="mb-7">
+      <div class="flex items-center justify-between mb-3 px-1">
+        <h2 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
+          <span class="w-2 h-5 rounded-full bg-blue-500 inline-block"></span>
+          Pilih Menu Pesanan
+        </h2>
+        <button type="button" onclick="resetCart()"
+                class="text-xs font-bold text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-full transition cursor-pointer">
+          Reset Pilihan
+        </button>
+      </div>
+
+      <!-- Kad menu dijana secara dinamik oleh JavaScript -->
+      <div id="menuContainer" class="space-y-3"></div>
+    </section>
+
+    <!-- 4. MAKLUMAT PELANGGAN & PILIHAN PENGHANTARAN -->
+    <section class="bg-white rounded-3xl p-5 sm:p-6 border border-blue-100 shadow-sm shadow-blue-200/40 mb-6">
+      <h2 class="text-base font-extrabold text-slate-900 mb-4 flex items-center gap-2">
+        <span class="w-2 h-5 rounded-full bg-blue-500 inline-block"></span>
+        Maklumat Pelanggan & Penghantaran
+      </h2>
+
+      <!-- Input Nama Pelanggan -->
+      <div class="mb-4">
+        <label for="customerName" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+          Nama Pelanggan <span class="text-rose-500">*</span>
+        </label>
+        <input type="text" id="customerName" placeholder="Masukkan nama anda (cth: Syafiqah / Danial)"
+               class="w-full px-4 py-3 rounded-2xl bg-blue-50/50 border border-blue-200 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
+      </div>
+
+      <!-- Pilihan Radio/Tab: Pickup at Pasar vs COD -->
+      <div class="mb-3">
+        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+          Kaedah Pengambilan
+        </label>
+        <div class="grid grid-cols-2 gap-2.5">
+          <label class="cursor-pointer">
+            <input type="radio" name="deliveryMethod" value="Pickup at Pasar" class="peer sr-only" checked onchange="toggleDeliveryFields()">
+            <div class="p-3.5 rounded-2xl border border-blue-200 bg-blue-50/40 text-center transition peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 peer-checked:shadow-md peer-checked:shadow-blue-500/25">
+              <div class="text-sm font-bold">Pickup at Pasar</div>
+              <div class="text-[11px] opacity-85 mt-0.5">Ambil sendiri di gerai</div>
+            </div>
+          </label>
+
+          <label class="cursor-pointer">
+            <input type="radio" name="deliveryMethod" value="COD (Cash on Delivery)" class="peer sr-only" onchange="toggleDeliveryFields()">
+            <div class="p-3.5 rounded-2xl border border-blue-200 bg-blue-50/40 text-center transition peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 peer-checked:shadow-md peer-checked:shadow-blue-500/25">
+              <div class="text-sm font-bold">COD (Cash on Delivery)</div>
+              <div class="text-[11px] opacity-85 mt-0.5">Hantar terus ke lokasi</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Kotak Input Alamat Penghantaran (Muncul Automatik Bila COD Dipilih) -->
+      <div id="codAddressWrapper" class="hidden mt-4 pt-3.5 border-t border-blue-100 animate-modal">
+        <label for="codAddress" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+          Alamat Penghantaran COD <span class="text-rose-500">*</span>
+        </label>
+        <textarea id="codAddress" rows="2" placeholder="Masukkan alamat lengkap atau mercu tanda (landmark) penghantaran..."
+                  class="w-full px-4 py-3 rounded-2xl bg-blue-50/50 border border-blue-200 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition"></textarea>
+      </div>
+
+      <!-- Kotak Nota Tambahan (Pilihan) -->
+      <div class="mt-4">
+        <label for="orderNotes" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+          Nota Tambahan (Pilihan)
+        </label>
+        <input type="text" id="orderNotes" placeholder="Contoh: Perisa bomboloni coklat 2, strawberi 1 / Anggaran masa"
+               class="w-full px-4 py-3 rounded-2xl bg-blue-50/50 border border-blue-200 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
+      </div>
+    </section>
+
+    <!-- FOOTER DENGAN BUTANG MOD PENJUAL (EDIT KEDAI) -->
+    <footer class="text-center pt-2 pb-6 space-y-2.5">
+      <p class="text-xs text-slate-500">
+        Pesanan akan disusun secara automatik ke dalam draf WhatsApp anda.
+      </p>
+      <div>
+        <button type="button" onclick="openPinModal()"
+                class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-blue-700 bg-white/80 hover:bg-white px-3.5 py-2 rounded-full border border-blue-100 shadow-2xs transition cursor-pointer">
+          <span>⚙️ Edit Kedai</span>
+        </button>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- =========================================================================
+       5. BAR RINGKASAN TERAPUNG & BUTANG CHECKOUT WHATSAPP
+  ========================================================================== -->
+  <div class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-blue-200/80 shadow-[0_-8px_25px_-5px_rgba(59,130,246,0.16)]">
+    <div class="max-w-lg mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <div>
+        <div class="text-xs font-semibold text-slate-500">
+          Jumlah (<span id="totalQtyDisplay" class="font-extrabold text-blue-700">0</span> item)
+        </div>
+        <div id="totalPriceDisplay" class="text-xl font-extrabold text-slate-900 tracking-tight">
+          RM 0.00
+        </div>
+      </div>
+
+      <button type="button" onclick="checkoutWhatsApp()"
+              class="flex-1 max-w-[250px] bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 active:scale-[0.98] text-white font-bold text-xs sm:text-sm py-3.5 px-4 rounded-full shadow-lg shadow-blue-500/30 flex items-center justify-center gap-2 transition cursor-pointer">
+        <svg class="w-5 h-5 fill-current flex-shrink-0" viewBox="0 0 24 24">
+          <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/>
+        </svg>
+        <span>Hantar Pesanan ke WhatsApp</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 1: LIGHTBOX PREVIEW GAMBAR GALERI
+  ========================================================================== -->
+  <div id="lightboxModal" class="fixed inset-0 z-50 hidden bg-slate-900/75 backdrop-blur-xs flex items-center justify-center p-4" onclick="closeLightboxOnBackdrop(event)">
+    <div class="bg-white rounded-3xl max-w-md w-full overflow-hidden shadow-2xl border border-blue-100 animate-modal">
+      <!-- Gambar Besar -->
+      <div class="relative bg-blue-50 aspect-[4/3] w-full">
+        <img id="lightboxImg" src="https://placehold.co/600x450/DBEAFE/1D4ED8?text=Preview" alt="Preview Makanan"
+             onerror="this.src='https://placehold.co/600x450/DBEAFE/1D4ED8?text=Gambar+Makanan'"
+             class="w-full h-full object-cover">
+        <button type="button" onclick="closeLightbox()" aria-label="Tutup Preview"
+                class="absolute top-3 right-3 w-9 h-9 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white flex items-center justify-center transition cursor-pointer">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+        <span id="lightboxPriceBadge" class="absolute bottom-3 left-3 bg-blue-600 text-white font-extrabold text-sm px-3.5 py-1 rounded-full shadow-md">
+          RM 0.00
+        </span>
+      </div>
+
+      <!-- Butiran & Butang Tambah ke Pesanan -->
+      <div class="p-5">
+        <h3 id="lightboxTitle" class="text-lg font-extrabold text-slate-900">Nama Makanan</h3>
+        <p id="lightboxDesc" class="text-sm text-slate-600 mt-1.5 leading-relaxed">
+          Penerangan ringkas makanan.
+        </p>
+
+        <div class="mt-5 flex items-center gap-2.5">
+          <button type="button" onclick="closeLightbox()"
+                  class="px-4 py-3 rounded-2xl border border-blue-200 text-slate-600 font-bold text-sm hover:bg-blue-50 transition cursor-pointer">
+            Tutup
+          </button>
+          <button type="button" id="lightboxAddBtn" onclick="addFromLightbox()"
+                  class="flex-1 bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-bold text-sm py-3 px-4 rounded-2xl shadow-md shadow-blue-500/25 flex items-center justify-center gap-1.5 transition cursor-pointer">
+            <span>+ Tambah ke Pesanan</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 2: LOGIN PIN PENJUAL (ADMIN ACCESS)
+  ========================================================================== -->
+  <div id="pinModal" class="fixed inset-0 z-50 hidden bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-4" onclick="if(event.target===this) closePinModal()">
+    <div class="bg-white rounded-3xl max-w-xs w-full p-6 shadow-2xl border border-blue-100 animate-modal text-center">
+      <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center mx-auto mb-3">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+        </svg>
+      </div>
+      <h3 class="text-lg font-extrabold text-slate-900">Mod Penjual</h3>
+      <p class="text-xs text-slate-500 mt-1">Masukkan PIN untuk mengedit kedai, galeri, dan senarai menu.</p>
+      <p class="inline-block mt-2 text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-full">
+        PIN lalai: 1234
+      </p>
+
+      <form onsubmit="verifyPin(event)" class="mt-4">
+        <input type="password" id="pinInput" inputmode="numeric" maxlength="10" placeholder="••••"
+               class="w-full text-center tracking-[0.4em] text-lg font-extrabold px-4 py-3 rounded-2xl bg-blue-50/70 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white">
+        <div class="grid grid-cols-2 gap-2 mt-4">
+          <button type="button" onclick="closePinModal()"
+                  class="py-2.5 rounded-2xl border border-slate-200 text-slate-600 font-bold text-sm hover:bg-slate-50 transition cursor-pointer">
+            Batal
+          </button>
+          <button type="submit"
+                  class="py-2.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-md shadow-blue-500/20 transition cursor-pointer">
+            Masuk
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 3: PANEL VISUAL EDITOR (MOD PENJUAL)
+  ========================================================================== -->
+  <div id="editorModal" class="fixed inset-0 z-50 hidden bg-slate-900/75 backdrop-blur-xs flex items-end sm:items-center justify-center">
+    <div class="bg-white w-full max-w-2xl h-[92vh] sm:h-[86vh] rounded-t-3xl sm:rounded-3xl shadow-2xl border border-blue-100 flex flex-col overflow-hidden animate-modal">
+      
+      <!-- Header Panel Editor -->
+      <div class="px-5 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white flex items-center justify-between flex-shrink-0">
+        <div>
+          <h2 class="text-base sm:text-lg font-extrabold flex items-center gap-2">
+            <span>⚙️ Panel Edit Kedai</span>
+          </h2>
+          <p class="text-xs text-blue-100">Ubah suai kandungan & muat turun fail HTML terkini</p>
+        </div>
+        <button type="button" onclick="closeEditor()"
+                class="w-9 h-9 rounded-full bg-white/15 hover:bg-white/25 text-white flex items-center justify-center transition cursor-pointer">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Navigasi Tab Editor -->
+      <div class="grid grid-cols-3 bg-blue-50/90 p-1.5 gap-1.5 border-b border-blue-100 flex-shrink-0">
+        <button type="button" id="tabBtn_settings" onclick="switchEditorTab('settings')"
+                class="py-2.5 px-2 rounded-xl text-xs sm:text-sm font-bold transition cursor-pointer bg-white text-blue-700 shadow-2xs">
+          Tetapan Kedai
+        </button>
+        <button type="button" id="tabBtn_gallery" onclick="switchEditorTab('gallery')"
+                class="py-2.5 px-2 rounded-xl text-xs sm:text-sm font-bold transition cursor-pointer text-slate-600 hover:text-blue-700">
+          Galeri Gambar
+        </button>
+        <button type="button" id="tabBtn_menu" onclick="switchEditorTab('menu')"
+                class="py-2.5 px-2 rounded-xl text-xs sm:text-sm font-bold transition cursor-pointer text-slate-600 hover:text-blue-700">
+          Urus Menu
+        </button>
+      </div>
+
+      <!-- Kandungan Tab Boleh Skrol -->
+      <div class="flex-1 overflow-y-auto p-5 space-y-5 bg-slate-50/60">
+
+        <!-- TAB 1: TETAPAN KEDAI -->
+        <div id="tabPanel_settings" class="space-y-4">
+          <div class="bg-white p-4 rounded-2xl border border-blue-100 space-y-3.5">
+            <h3 class="text-sm font-extrabold text-slate-900">Profil & Bio-Link Kedai</h3>
+
+            <!-- Muat Naik Logo Kedai -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1.5">Logo / Avatar Kedai (Pilihan)</label>
+              <div class="flex items-center gap-3">
+                <div id="editorLogoPreview" class="w-14 h-14 rounded-full bg-blue-50 border border-blue-200 overflow-hidden flex items-center justify-center flex-shrink-0"></div>
+                <div class="flex-1 space-y-1.5">
+                  <input type="file" id="editLogoFile" accept="image/*" onchange="handleLogoUpload(event)"
+                         class="block w-full text-xs text-slate-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+                  <button type="button" onclick="resetStoreLogo()" class="text-[11px] font-semibold text-rose-600 hover:underline">
+                    Guna Ikon Lalai
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Nama Kedai</label>
+              <input type="text" id="editStoreName" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Tagline Kedai</label>
+              <input type="text" id="editStoreTagline" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Info Lokasi & Waktu Operasi</label>
+              <input type="text" id="editStoreSchedule" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Nombor WhatsApp (cth: 60123456789)</label>
+                <input type="text" id="editStoreWhatsapp" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Tukar PIN Admin</label>
+                <input type="text" id="editStorePin" maxlength="10" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Pautan TikTok</label>
+                <input type="url" id="editStoreTiktok" placeholder="https://tiktok.com/@akaun" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Pautan Instagram</label>
+                <input type="url" id="editStoreInstagram" placeholder="https://instagram.com/akaun" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-200 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: GALERI GAMBAR -->
+        <div id="tabPanel_gallery" class="hidden space-y-4">
+          <!-- Borang Tambah Gambar Baharu -->
+          <div class="bg-white p-4 rounded-2xl border border-blue-200 space-y-3">
+            <h3 class="text-sm font-extrabold text-blue-800">+ Muat Naik Gambar Galeri Baharu</h3>
+            <p class="text-xs text-slate-500">Gambar dimampatkan secara automatik (lebar maks 600px) supaya laman web kekal laju.</p>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Pilih Gambar Makanan *</label>
+              <input type="file" id="newGalleryFile" accept="image/*"
+                     class="block w-full text-xs text-slate-600 file:mr-3 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer">
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Kapsyen / Nama Makanan *</label>
+                <input type="text" id="newGalleryTitle" placeholder="Contoh: Donat Coklat Badam"
+                       class="w-full px-3 py-2 rounded-xl border border-blue-200 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Tag Harga (RM) *</label>
+                <input type="number" step="0.10" min="0" id="newGalleryPrice" placeholder="3.00"
+                       class="w-full px-3 py-2 rounded-xl border border-blue-200 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Pautkan ke Item Menu (Untuk Butang Tambah Pesanan)</label>
+              <select id="newGalleryMenuLink" class="w-full px-3 py-2 rounded-xl border border-blue-200 text-sm bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none"></select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Penerangan Ringkas (Untuk Lightbox)</label>
+              <input type="text" id="newGalleryDesc" placeholder="Contoh: Salutan coklat tebal dengan badam panggang rangup."
+                     class="w-full px-3 py-2 rounded-xl border border-blue-200 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            </div>
+
+            <button type="button" onclick="addGalleryItem()"
+                    class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm shadow-sm transition cursor-pointer">
+              + Tambah ke Galeri
+            </button>
+          </div>
+
+          <!-- Senarai Gambar Sedia Ada -->
+          <div class="space-y-2.5">
+            <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-600 px-1">Gambar Galeri Sedia Ada</h3>
+            <div id="editorGalleryList" class="space-y-2.5"></div>
+          </div>
+        </div>
+
+        <!-- TAB 3: URUS MENU -->
+        <div id="tabPanel_menu" class="hidden space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-sm font-extrabold text-slate-900">Senarai Item Menu</h3>
+              <p class="text-xs text-slate-500">Edit harga, gambar kecil, promo, atau status Habis (Sold Out).</p>
+            </div>
+            <button type="button" onclick="addNewMenuItem()"
+                    class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm transition cursor-pointer">
+              + Tambah Item Menu Baharu
+            </button>
+          </div>
+
+          <div id="editorMenuList" class="space-y-3"></div>
+        </div>
+
+      </div>
+
+      <!-- Footer Tindakan Simpan & Muat Turun HTML Terkini -->
+      <div class="p-4 bg-white border-t border-blue-100 flex flex-col sm:flex-row gap-2.5 flex-shrink-0">
+        <button type="button" onclick="saveEditorChanges(true)"
+                class="flex-1 py-3 px-4 rounded-2xl bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 font-bold text-xs sm:text-sm transition cursor-pointer">
+          Simpan Perubahan
+        </button>
+        <button type="button" onclick="exportUpdatedHtml()"
+                class="flex-1 py-3 px-4 rounded-2xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold text-xs sm:text-sm shadow-md shadow-blue-500/25 flex items-center justify-center gap-1.5 transition cursor-pointer">
+          <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+          </svg>
+          <span>Muat Turun Fail HTML Terkini (index.html)</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       LOGIK APLIKASI JAVASCRIPT LENGKAP
+  ========================================================================== -->
+  <script>
+    const STORAGE_KEY = "manisan_store_config_v1";
+    let appConfig = null;
+    let cart = {}; // Menyimpan kuantiti mengikut menu.id
+    let currentLightboxItem = null;
+    let tempLogoDataUrl = null;
+
+    // =========================================================================
+    // 1. INISIALISASI & MUAT DATA KONFIGURASI
+    // =========================================================================
+    function loadConfig() {
+      // Baca konfigurasi lalai yang terbina dalam tag JSON fail HTML
+      let embeddedConfig = {};
+      try {
+        const rawJson = document.getElementById("store-config-data").textContent;
+        embeddedConfig = JSON.parse(rawJson);
+      } catch (err) {
+        console.error("Ralat membaca data JSON terbina dalam:", err);
+      }
+
+      // Semak jika terdapat suntingan tempatan di localStorage
+      try {
+        const savedLocal = localStorage.getItem(STORAGE_KEY);
+        if (savedLocal) {
+          const parsedLocal = JSON.parse(savedLocal);
+          appConfig = {
+            pin: parsedLocal.pin || embeddedConfig.pin || "1234",
+            store: { ...embeddedConfig.store, ...(parsedLocal.store || {}) },
+            gallery: Array.isArray(parsedLocal.gallery) ? parsedLocal.gallery : embeddedConfig.gallery,
+            menu: Array.isArray(parsedLocal.menu) ? parsedLocal.menu : embeddedConfig.menu
+          };
+          return;
+        }
+      } catch (e) {
+        console.warn("Tidak dapat memuat localStorage, menggunakan data fail HTML.");
+      }
+
+      appConfig = embeddedConfig;
+    }
+
+    function persistConfigToLocal() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appConfig));
+      } catch (e) {
+        paparNotifikasi("Amaran: Storan pelayar penuh. Sila muat turun fail HTML terkini untuk simpan kekal.");
+      }
+    }
+
+    // =========================================================================
+    // 2. PAPARAN HEADER & BIO-LINK KEDAI
+    // =========================================================================
+    function renderStoreHeader() {
+      const { store } = appConfig;
+      document.title = `${store.name} — Bio-Link, Galeri & Tempahan WhatsApp`;
+      document.getElementById("displayStoreName").textContent = store.name;
+      document.getElementById("displayStoreTagline").textContent = store.tagline;
+      document.getElementById("displayScheduleLocation").textContent = store.scheduleLocation;
+
+      // Pautan Sosial
+      const cleanWa = (store.whatsapp || "").replace(/[^0-9]/g, "");
+      document.getElementById("linkWhatsAppDirect").href = `https://wa.me/${cleanWa}`;
+      document.getElementById("linkTikTok").href = store.tiktok || "https://tiktok.com";
+      document.getElementById("linkInstagram").href = store.instagram || "https://instagram.com";
+
+      // Logo Kedai
+      const logoContainer = document.getElementById("storeLogoContainer");
+      if (store.logo) {
+        logoContainer.innerHTML = `<img src="${store.logo}" alt="${escapeHtml(store.name)}" class="w-full h-full object-cover">`;
+      } else {
+        logoContainer.innerHTML = `
+          <svg class="w-9 h-9 text-blue-500 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z"></path>
+          </svg>
+          <span class="text-[10px] font-extrabold tracking-widest uppercase text-blue-800">KEDAI</span>
+        `;
+      }
+    }
+
+    // =========================================================================
+    // 3. GALERI GAMBAR MAKANAN (SCROLLABLE REFERENCE GALLERY + LIGHTBOX)
+    // =========================================================================
+    function renderGallery() {
+      const container = document.getElementById("galleryContainer");
+      const section = document.getElementById("gallerySection");
+
+      if (!appConfig.gallery || appConfig.gallery.length === 0) {
+        section.classList.add("hidden");
+        return;
+      }
+
+      section.classList.remove("hidden");
+      container.innerHTML = "";
+
+      appConfig.gallery.forEach((item, index) => {
+        const fallbackUrl = `https://placehold.co/600x450/DBEAFE/1D4ED8?text=${encodeURIComponent(item.title)}`;
+        const card = `
+          <article onclick="openLightbox(${index})"
+                   class="snap-start flex-shrink-0 w-44 sm:w-48 bg-white rounded-2xl border border-blue-100 shadow-xs hover:shadow-md hover:border-blue-300 overflow-hidden cursor-pointer group transition-all duration-200">
+            <div class="relative aspect-[4/3] bg-blue-50 overflow-hidden">
+              <img src="${item.image}" alt="${escapeHtml(item.title)}"
+                   onerror="this.onerror=null;this.src='${fallbackUrl}'"
+                   class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              <span class="absolute bottom-2 right-2 bg-blue-600/95 backdrop-blur-xs text-white text-[11px] font-extrabold px-2.5 py-0.5 rounded-full shadow-xs">
+                RM ${Number(item.price).toFixed(2)}
+              </span>
+            </div>
+            <div class="p-3">
+              <h3 class="text-xs sm:text-sm font-bold text-slate-800 line-clamp-1 group-hover:text-blue-700 transition">
+                ${escapeHtml(item.title)}
+              </h3>
+              <p class="text-[11px] text-blue-600 font-semibold mt-0.5 flex items-center gap-1">
+                <span>Lihat & Pesan</span>
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </p>
+            </div>
+          </article>
+        `;
+        container.insertAdjacentHTML("beforeend", card);
+      });
+    }
+
+    function scrollGallery(offset) {
+      const container = document.getElementById("galleryContainer");
+      container.scrollBy({ left: offset, behavior: "smooth" });
+    }
+
+    function openLightbox(index) {
+      const item = appConfig.gallery[index];
+      if (!item) return;
+
+      currentLightboxItem = item;
+      const fallbackUrl = `https://placehold.co/600x450/DBEAFE/1D4ED8?text=${encodeURIComponent(item.title)}`;
+
+      const imgEl = document.getElementById("lightboxImg");
+      imgEl.onerror = function() { this.onerror = null; this.src = fallbackUrl; };
+      imgEl.src = item.image || fallbackUrl;
+
+      document.getElementById("lightboxTitle").textContent = item.title;
+      document.getElementById("lightboxPriceBadge").textContent = `RM ${Number(item.price).toFixed(2)}`;
+      document.getElementById("lightboxDesc").textContent = item.description || "Hidangan segar disediakan khas untuk tempahan anda.";
+
+      // Semak sama ada item menu yang dipautkan berstatus Sold Out
+      const linkedMenu = findLinkedMenuItem(item);
+      const addBtn = document.getElementById("lightboxAddBtn");
+
+      if (linkedMenu && linkedMenu.soldOut) {
+        addBtn.disabled = true;
+        addBtn.className = "flex-1 bg-slate-200 text-slate-500 font-bold text-sm py-3 px-4 rounded-2xl flex items-center justify-center cursor-not-allowed";
+        addBtn.innerHTML = `<span>Habis / Sold Out</span>`;
+      } else {
+        addBtn.disabled = false;
+        addBtn.className = "flex-1 bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-bold text-sm py-3 px-4 rounded-2xl shadow-md shadow-blue-500/25 flex items-center justify-center gap-1.5 transition cursor-pointer";
+        addBtn.innerHTML = `<span>+ Tambah ke Pesanan</span>`;
+      }
+
+      document.getElementById("lightboxModal").classList.remove("hidden");
+    }
+
+    function closeLightbox() {
+      document.getElementById("lightboxModal").classList.add("hidden");
+      currentLightboxItem = null;
+    }
+
+    function closeLightboxOnBackdrop(event) {
+      if (event.target === document.getElementById("lightboxModal")) {
+        closeLightbox();
+      }
+    }
+
+    function findLinkedMenuItem(galleryItem) {
+      if (!galleryItem) return null;
+      if (galleryItem.menuId) {
+        const byId = appConfig.menu.find(m => m.id === galleryItem.menuId);
+        if (byId) return byId;
+      }
+      // Padankan mengikut nama jika menuId tidak ditetapkan
+      const titleLower = galleryItem.title.toLowerCase();
+      return appConfig.menu.find(m => titleLower.includes(m.name.toLowerCase())) || null;
+    }
+
+    function addFromLightbox() {
+      if (!currentLightboxItem) return;
+      const targetMenu = findLinkedMenuItem(currentLightboxItem);
+
+      if (targetMenu) {
+        if (targetMenu.soldOut) {
+          paparNotifikasi(`Maaf, ${targetMenu.name} telah habis buat masa ini.`);
+          return;
+        }
+        cart[targetMenu.id] = (cart[targetMenu.id] || 0) + 1;
+        renderMenu();
+        closeLightbox();
+        paparNotifikasi(`+1 ${targetMenu.name} ditambah ke pesanan!`);
+      } else {
+        // Jika gambar galeri tiada padanan menu, tambah sebagai item sementara dalam menu supaya pelanggan tetap boleh order
+        const tempId = "custom_" + currentLightboxItem.id;
+        let existing = appConfig.menu.find(m => m.id === tempId);
+        if (!existing) {
+          existing = {
+            id: tempId,
+            name: currentLightboxItem.title,
+            price: Number(currentLightboxItem.price) || 0,
+            subtitle: `RM ${Number(currentLightboxItem.price).toFixed(2)}`,
+            badge: "",
+            isPromo3For10: false,
+            soldOut: false,
+            image: currentLightboxItem.image
+          };
+          appConfig.menu.push(existing);
+        }
+        cart[tempId] = (cart[tempId] || 0) + 1;
+        renderMenu();
+        closeLightbox();
+        paparNotifikasi(`+1 ${existing.name} ditambah ke pesanan!`);
+      }
+    }
+
+    // =========================================================================
+    // 4. SENARAI MENU INTERAKTIF & KIRAAN PROMO AUTOMATIK
+    // =========================================================================
+    function calculateItemSubtotal(item, qty) {
+      if (qty <= 0) return 0;
+      const unitPrice = Number(item.price) || 0;
+
+      // Aturan promo automatik: Beli 3 RM 10.00!
+      if (item.isPromo3For10) {
+        const promoSets = Math.floor(qty / 3);
+        const remainder = qty % 3;
+        return (promoSets * 10.00) + (remainder * unitPrice);
+      }
+
+      return qty * unitPrice;
+    }
+
+    function renderMenu() {
+      const container = document.getElementById("menuContainer");
+      container.innerHTML = "";
+
+      appConfig.menu.forEach((item) => {
+        // Pastikan item habis (Sold Out) tidak mempunyai kuantiti dalam troli
+        if (item.soldOut && cart[item.id] > 0) {
+          cart[item.id] = 0;
+        }
+
+        const qty = cart[item.id] || 0;
+        const subTotal = calculateItemSubtotal(item, qty);
+        const fallbackThumb = `https://placehold.co/200x200/DBEAFE/1D4ED8?text=${encodeURIComponent(item.name)}`;
+
+        // Lencana penjimatan promo jika pelanggan beli 3 atau lebih
+        let savingsBadge = "";
+        if (item.isPromo3For10 && qty >= 3 && !item.soldOut) {
+          const promoSets = Math.floor(qty / 3);
+          const normalSetPrice = Number(item.price) * 3;
+          const totalSaved = Math.max(0, promoSets * (normalSetPrice - 10.00));
+          if (totalSaved > 0) {
+            savingsBadge = `
+              <span class="inline-flex items-center gap-1 mt-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
+                ✓ Promo ${promoSets}x Set (Jimat RM ${totalSaved.toFixed(2)})
+              </span>
+            `;
+          }
+        }
+
+        // Paparan status Sold Out vs Aktif
+        const cardBorderClass = item.soldOut
+          ? "border-slate-200 bg-white/70 opacity-80"
+          : qty > 0
+            ? "border-blue-400 bg-white shadow-md shadow-blue-200/50 ring-1 ring-blue-300/60"
+            : "border-blue-100 bg-white shadow-xs";
+
+        const cardHTML = `
+          <div class="rounded-2xl p-3.5 border transition-all duration-200 ${cardBorderClass}">
+            <div class="flex items-center gap-3">
+              
+              <!-- Gambar Kecil (Thumbnail) -->
+              <div class="relative w-16 h-16 rounded-xl bg-blue-50 border border-blue-100 overflow-hidden flex-shrink-0">
+                <img src="${item.image || fallbackThumb}" alt="${escapeHtml(item.name)}"
+                     onerror="this.onerror=null;this.src='${fallbackThumb}'"
+                     class="w-full h-full object-cover ${item.soldOut ? 'grayscale' : ''}">
+                ${item.soldOut ? `
+                  <div class="absolute inset-0 bg-slate-900/55 flex items-center justify-center">
+                    <span class="text-[9px] font-extrabold uppercase tracking-wider text-white bg-rose-600 px-1.5 py-0.5 rounded">Habis</span>
+                  </div>
+                ` : ''}
+              </div>
+
+              <!-- Nama Item, Harga & Lencana -->
+              <div class="flex-1 min-w-0">
+                <div class="flex flex-wrap items-center gap-1.5">
+                  <h3 class="font-bold text-slate-900 text-sm sm:text-base leading-tight ${item.soldOut ? 'line-through text-slate-500' : ''}">
+                    ${escapeHtml(item.name)}
+                  </h3>
+                  ${item.soldOut
+                    ? `<span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-rose-50 text-rose-600 border border-rose-200">Habis / Sold Out</span>`
+                    : item.badge
+                      ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">${escapeHtml(item.badge)}</span>`
+                      : ''
+                  }
+                </div>
+
+                <p class="text-xs sm:text-sm font-semibold text-blue-600 mt-0.5">
+                  RM ${Number(item.price).toFixed(2)}
+                  ${item.subtitle ? `<span class="text-xs font-normal text-slate-400">• ${escapeHtml(item.subtitle)}</span>` : ''}
+                </p>
+
+                ${savingsBadge}
+              </div>
+
+              <!-- Kawalan Kuantiti (- / +) & Sub-Jumlah -->
+              <div class="flex flex-col items-end gap-1.5 flex-shrink-0">
+                <div class="flex items-center bg-blue-50/80 rounded-full p-1 border border-blue-200/80">
+                  <button type="button" onclick="updateItemQty('${item.id}', -1)"
+                          ${item.soldOut || qty <= 0 ? 'disabled' : ''}
+                          aria-label="Kurangkan ${escapeHtml(item.name)}"
+                          class="w-8 h-8 rounded-full bg-white text-blue-700 font-bold text-base flex items-center justify-center border border-blue-100 transition ${item.soldOut || qty <= 0 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-blue-100 active:scale-90 cursor-pointer'}">
+                    −
+                  </button>
+                  <span class="w-8 text-center font-extrabold text-sm text-slate-800 select-none">
+                    ${qty}
+                  </span>
+                  <button type="button" onclick="updateItemQty('${item.id}', 1)"
+                          ${item.soldOut ? 'disabled' : ''}
+                          aria-label="Tambah ${escapeHtml(item.name)}"
+                          class="w-8 h-8 rounded-full font-bold text-base flex items-center justify-center transition ${item.soldOut ? 'bg-slate-300 text-white cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 active:scale-90 text-white shadow-2xs cursor-pointer'}">
+                    +
+                  </button>
+                </div>
+
+                <span class="text-xs font-extrabold ${qty > 0 ? 'text-blue-700' : 'text-slate-400'}">
+                  RM ${subTotal.toFixed(2)}
+                </span>
+              </div>
+
+            </div>
+          </div>
+        `;
+        container.insertAdjacentHTML("beforeend", cardHTML);
+      });
+
+      updateFloatingSummary();
+    }
+
+    function updateItemQty(itemId, delta) {
+      const item = appConfig.menu.find(m => m.id === itemId);
+      if (!item) return;
+
+      if (item.soldOut && delta > 0) {
+        paparNotifikasi(`Maaf, ${item.name} telah habis (Sold Out).`);
+        return;
+      }
+
+      const currentQty = cart[itemId] || 0;
+      const nextQty = Math.max(0, currentQty + delta);
+      cart[itemId] = nextQty;
+      renderMenu();
+    }
+
+    function resetCart() {
+      cart = {};
+      renderMenu();
+      paparNotifikasi("Semua pilihan pesanan telah ditetapkan semula.");
+    }
+
+    function updateFloatingSummary() {
+      let totalQty = 0;
+      let totalPrice = 0;
+
+      appConfig.menu.forEach((item) => {
+        const qty = cart[item.id] || 0;
+        if (qty > 0 && !item.soldOut) {
+          totalQty += qty;
+          totalPrice += calculateItemSubtotal(item, qty);
+        }
+      });
+
+      document.getElementById("totalQtyDisplay").textContent = totalQty;
+      document.getElementById("totalPriceDisplay").textContent = `RM ${totalPrice.toFixed(2)}`;
+    }
+
+    // =========================================================================
+    // 5. KAWALAN PILIHAN PENGHANTARAN (PICKUP AT PASAR / COD)
+    // =========================================================================
+    function toggleDeliveryFields() {
+      const method = document.querySelector('input[name="deliveryMethod"]:checked').value;
+      const addressWrapper = document.getElementById("codAddressWrapper");
+
+      if (method.startsWith("COD")) {
+        addressWrapper.classList.remove("hidden");
+      } else {
+        addressWrapper.classList.add("hidden");
+      }
+    }
+
+    // =========================================================================
+    // 6. CHECKOUT TERUS KE WHATSAPP
+    // =========================================================================
+    function checkoutWhatsApp() {
+      const selectedItems = appConfig.menu.filter(item => !item.soldOut && (cart[item.id] || 0) > 0);
+
+      if (selectedItems.length === 0) {
+        paparNotifikasi("Sila pilih sekurang-kurangnya 1 item menu terlebih dahulu.");
+        return;
+      }
+
+      const customerName = document.getElementById("customerName").value.trim();
+      if (!customerName) {
+        paparNotifikasi("Sila masukkan nama anda sebelum menghantar pesanan.");
+        document.getElementById("customerName").focus();
+        return;
+      }
+
+      const deliveryMethod = document.querySelector('input[name="deliveryMethod"]:checked').value;
+      const codAddress = document.getElementById("codAddress").value.trim();
+      const orderNotes = document.getElementById("orderNotes").value.trim();
+
+      if (deliveryMethod.startsWith("COD") && !codAddress) {
+        paparNotifikasi("Sila masukkan alamat penghantaran COD anda.");
+        document.getElementById("codAddress").focus();
+        return;
+      }
+
+      let itemLines = "";
+      let grandTotal = 0;
+      let totalPromoSavings = 0;
+
+      selectedItems.forEach((item, index) => {
+        const qty = cart[item.id];
+        const subTotal = calculateItemSubtotal(item, qty);
+        grandTotal += subTotal;
+
+        let promoNote = "";
+        if (item.isPromo3For10 && qty >= 3) {
+          const sets = Math.floor(qty / 3);
+          const saved = Math.max(0, sets * ((Number(item.price) * 3) - 10.00));
+          totalPromoSavings += saved;
+          promoNote = ` _(Promo ${sets}x Set 3 RM10)_`;
+        }
+
+        itemLines += `${index + 1}. *${item.name}* (x${qty}) — RM ${subTotal.toFixed(2)}${promoNote}\n`;
+      });
+
+      let message = `Assalamualaikum / Hai *${appConfig.store.name}*! Saya ingin membuat tempahan:\n\n`;
+      message += `*Nama:* ${customerName}\n`;
+      message += `*Kaedah:* ${deliveryMethod}\n`;
+
+      if (deliveryMethod.startsWith("COD")) {
+        message += `*Alamat COD:* ${codAddress}\n`;
+      }
+      if (orderNotes) {
+        message += `*Nota Tambahan:* ${orderNotes}\n`;
+      }
+
+      message += `\n*Senarai Pesanan:*\n`;
+      message += itemLines;
+
+      if (totalPromoSavings > 0) {
+        message += `\n*Penjimatan Promo Mochi:* -RM ${totalPromoSavings.toFixed(2)}\n`;
+      }
+
+      message += `*Jumlah Bayaran: RM ${grandTotal.toFixed(2)}*\n\n`;
+      message += `Terima kasih!`;
+
+      const cleanPhone = (appConfig.store.whatsapp || "60123456789").replace(/[^0-9]/g, "");
+      const waUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
+      window.open(waUrl, "_blank");
+    }
+
+    // =========================================================================
+    // 7. MOD PENJUAL / VISUAL EDITOR (PIN, TETAPAN, GALERI, MENU & EKSPORT)
+    // =========================================================================
+    function openPinModal() {
+      document.getElementById("pinInput").value = "";
+      document.getElementById("pinModal").classList.remove("hidden");
+      setTimeout(() => document.getElementById("pinInput").focus(), 100);
+    }
+
+    function closePinModal() {
+      document.getElementById("pinModal").classList.add("hidden");
+    }
+
+    function verifyPin(event) {
+      event.preventDefault();
+      const entered = document.getElementById("pinInput").value.trim();
+      const validPin = appConfig.pin || "1234";
+
+      if (entered === validPin) {
+        closePinModal();
+        openEditor();
+      } else {
+        paparNotifikasi("PIN salah! Sila cuba lagi (PIN lalai: 1234).");
+        document.getElementById("pinInput").value = "";
+        document.getElementById("pinInput").focus();
+      }
+    }
+
+    function openEditor() {
+      tempLogoDataUrl = appConfig.store.logo || "";
+      populateSettingsForm();
+      renderEditorGalleryList();
+      renderEditorMenuList();
+      switchEditorTab("settings");
+      document.getElementById("editorModal").classList.remove("hidden");
+    }
+
+    function closeEditor() {
+      document.getElementById("editorModal").classList.add("hidden");
+    }
+
+    function switchEditorTab(tabName) {
+      ["settings", "gallery", "menu"].forEach((tab) => {
+        const btn = document.getElementById(`tabBtn_${tab}`);
+        const panel = document.getElementById(`tabPanel_${tab}`);
+
+        if (tab === tabName) {
+          btn.className = "py-2.5 px-2 rounded-xl text-xs sm:text-sm font-bold transition cursor-pointer bg-white text-blue-700 shadow-2xs";
+          panel.classList.remove("hidden");
+        } else {
+          btn.className = "py-2.5 px-2 rounded-xl text-xs sm:text-sm font-bold transition cursor-pointer text-slate-600 hover:text-blue-700";
+          panel.classList.add("hidden");
+        }
+      });
+
+      if (tabName === "gallery") {
+        populateGalleryMenuDropdown();
+      }
+    }
+
+    // --- Tab 1: Tetapan Kedai ---
+    function populateSettingsForm() {
+      document.getElementById("editStoreName").value = appConfig.store.name || "";
+      document.getElementById("editStoreTagline").value = appConfig.store.tagline || "";
+      document.getElementById("editStoreSchedule").value = appConfig.store.scheduleLocation || "";
+      document.getElementById("editStoreWhatsapp").value = appConfig.store.whatsapp || "";
+      document.getElementById("editStoreTiktok").value = appConfig.store.tiktok || "";
+      document.getElementById("editStoreInstagram").value = appConfig.store.instagram || "";
+      document.getElementById("editStorePin").value = appConfig.pin || "1234";
+      updateEditorLogoPreview();
+    }
+
+    function updateEditorLogoPreview() {
+      const box = document.getElementById("editorLogoPreview");
+      if (tempLogoDataUrl) {
+        box.innerHTML = `<img src="${tempLogoDataUrl}" alt="Logo" class="w-full h-full object-cover">`;
+      } else {
+        box.innerHTML = `<span class="text-[10px] font-bold text-blue-600">LALAI</span>`;
+      }
+    }
+
+    async function handleLogoUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      try {
+        tempLogoDataUrl = await compressImageFile(file, 300, 0.8);
+        updateEditorLogoPreview();
+        paparNotifikasi("Logo berjaya dimuat naik dan dimampatkan.");
+      } catch (err) {
+        paparNotifikasi("Gagal memproses gambar logo.");
+      }
+    }
+
+    function resetStoreLogo() {
+      tempLogoDataUrl = "";
+      document.getElementById("editLogoFile").value = "";
+      updateEditorLogoPreview();
+    }
+
+    // --- Tab 2: Galeri Gambar ---
+    function populateGalleryMenuDropdown() {
+      const select = document.getElementById("newGalleryMenuLink");
+      select.innerHTML = `<option value="">-- Padankan automatik mengikut nama --</option>`;
+      appConfig.menu.forEach((m) => {
+        select.insertAdjacentHTML("beforeend", `<option value="${m.id}">${escapeHtml(m.name)} (RM ${Number(m.price).toFixed(2)})</option>`);
+      });
+    }
+
+    async function addGalleryItem() {
+      const fileInput = document.getElementById("newGalleryFile");
+      const title = document.getElementById("newGalleryTitle").value.trim();
+      const priceVal = parseFloat(document.getElementById("newGalleryPrice").value);
+      const menuId = document.getElementById("newGalleryMenuLink").value;
+      const description = document.getElementById("newGalleryDesc").value.trim();
+
+      if (!fileInput.files || !fileInput.files[0]) {
+        paparNotifikasi("Sila pilih fail gambar makanan terlebih dahulu.");
+        return;
+      }
+      if (!title) {
+        paparNotifikasi("Sila masukkan kapsyen atau nama makanan.");
+        return;
+      }
+      if (isNaN(priceVal) || priceVal < 0) {
+        paparNotifikasi("Sila masukkan harga yang sah.");
+        return;
+      }
+
+      try {
+        // Mampatkan gambar kepada lebar maksimum 600px, kualiti JPEG 0.75
+        const compressedDataUrl = await compressImageFile(fileInput.files[0], 600, 0.75);
+
+        appConfig.gallery.unshift({
+          id: "gal_" + Date.now(),
+          menuId: menuId || "",
+          title: title,
+          price: priceVal,
+          description: description || `Hidangan istimewa ${title}.`,
+          image: compressedDataUrl
+        });
+
+        // Kosongkan borang
+        fileInput.value = "";
+        document.getElementById("newGalleryTitle").value = "";
+        document.getElementById("newGalleryPrice").value = "";
+        document.getElementById("newGalleryDesc").value = "";
+
+        renderEditorGalleryList();
+        renderGallery();
+        persistConfigToLocal();
+        paparNotifikasi("Gambar baharu berjaya ditambah ke galeri!");
+      } catch (err) {
+        paparNotifikasi("Ralat memproses gambar. Sila cuba gambar lain.");
+      }
+    }
+
+    function renderEditorGalleryList() {
+      const list = document.getElementById("editorGalleryList");
+      list.innerHTML = "";
+
+      if (appConfig.gallery.length === 0) {
+        list.innerHTML = `<p class="text-xs text-slate-500 text-center py-4 bg-white rounded-2xl border border-blue-100">Tiada gambar dalam galeri.</p>`;
+        return;
+      }
+
+      appConfig.gallery.forEach((item, index) => {
+        const row = `
+          <div class="bg-white p-3 rounded-2xl border border-blue-100 flex items-center gap-3">
+            <img src="${item.image}" alt="${escapeHtml(item.title)}"
+                 onerror="this.src='https://placehold.co/200x150/DBEAFE/1D4ED8?text=Foto'"
+                 class="w-16 h-14 rounded-xl object-cover bg-blue-50 flex-shrink-0 border border-blue-100">
+            <div class="flex-1 min-w-0 space-y-1.5">
+              <div class="grid grid-cols-3 gap-1.5">
+                <input type="text" value="${escapeHtml(item.title)}"
+                       onchange="updateGalleryField(${index}, 'title', this.value)"
+                       class="col-span-2 px-2.5 py-1.5 rounded-lg border border-blue-100 text-xs font-bold text-slate-800 focus:ring-1 focus:ring-blue-500 focus:outline-none">
+                <input type="number" step="0.10" value="${Number(item.price).toFixed(2)}"
+                       onchange="updateGalleryField(${index}, 'price', parseFloat(this.value) || 0)"
+                       class="px-2.5 py-1.5 rounded-lg border border-blue-100 text-xs font-bold text-blue-700 focus:ring-1 focus:ring-blue-500 focus:outline-none">
+              </div>
+              <input type="text" value="${escapeHtml(item.description || '')}" placeholder="Penerangan ringkas..."
+                     onchange="updateGalleryField(${index}, 'description', this.value)"
+                     class="w-full px-2.5 py-1 rounded-lg border border-slate-100 text-[11px] text-slate-600 focus:ring-1 focus:ring-blue-500 focus:outline-none">
+            </div>
+            <button type="button" onclick="deleteGalleryItem(${index})" title="Padam Gambar"
+                    class="p-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 transition cursor-pointer flex-shrink-0">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+              </svg>
+            </button>
+          </div>
+        `;
+        list.insertAdjacentHTML("beforeend", row);
+      });
+    }
+
+    function updateGalleryField(index, field, value) {
+      if (!appConfig.gallery[index]) return;
+      appConfig.gallery[index][field] = value;
+      renderGallery();
+    }
+
+    function deleteGalleryItem(index) {
+      appConfig.gallery.splice(index, 1);
+      renderEditorGalleryList();
+      renderGallery();
+      persistConfigToLocal();
+      paparNotifikasi("Gambar telah dipadam daripada galeri.");
+    }
+
+    // --- Tab 3: Urus Menu ---
+    function renderEditorMenuList() {
+      const list = document.getElementById("editorMenuList");
+      list.innerHTML = "";
+
+      appConfig.menu.forEach((item, index) => {
+        const fallbackThumb = `https://placehold.co/200x200/DBEAFE/1D4ED8?text=${encodeURIComponent(item.name)}`;
+        const block = `
+          <div class="bg-white p-4 rounded-2xl border ${item.soldOut ? 'border-rose-200 bg-rose-50/20' : 'border-blue-100'} space-y-3">
+            <div class="flex items-start gap-3">
+              <!-- Gambar Kecil Menu & Butang Tukar Gambar -->
+              <div class="flex flex-col items-center gap-1.5 flex-shrink-0">
+                <img src="${item.image || fallbackThumb}" alt="${escapeHtml(item.name)}"
+                     onerror="this.src='${fallbackThumb}'"
+                     class="w-16 h-16 rounded-xl object-cover border border-blue-100 bg-blue-50">
+                <label class="text-[10px] font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 px-2 py-1 rounded-lg cursor-pointer transition">
+                  Tukar Foto
+                  <input type="file" accept="image/*" class="hidden" onchange="handleMenuThumbUpload(event, ${index})">
+                </label>
+              </div>
+
+              <!-- Medan Edit Nama, Harga, Sub-label -->
+              <div class="flex-1 min-w-0 space-y-2">
+                <div class="grid grid-cols-3 gap-2">
+                  <div class="col-span-2">
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase">Nama Menu</label>
+                    <input type="text" value="${escapeHtml(item.name)}"
+                           onchange="updateMenuField(${index}, 'name', this.value)"
+                           class="w-full px-2.5 py-1.5 rounded-xl border border-blue-200 text-xs sm:text-sm font-bold text-slate-800">
+                  </div>
+                  <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase">Harga (RM)</label>
+                    <input type="number" step="0.10" min="0" value="${Number(item.price).toFixed(2)}"
+                           onchange="updateMenuField(${index}, 'price', parseFloat(this.value) || 0)"
+                           class="w-full px-2.5 py-1.5 rounded-xl border border-blue-200 text-xs sm:text-sm font-bold text-blue-700">
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase">Nota Unit (cth: / biji)</label>
+                    <input type="text" value="${escapeHtml(item.subtitle || '')}"
+                           onchange="updateMenuField(${index}, 'subtitle', this.value)"
+                           class="w-full px-2.5 py-1.5 rounded-xl border border-slate-200 text-xs text-slate-700">
+                  </div>
+                  <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase">Lencana Promo</label>
+                    <input type="text" value="${escapeHtml(item.badge || '')}" placeholder="cth: Hot Selling"
+                           onchange="updateMenuField(${index}, 'badge', this.value)"
+                           class="w-full px-2.5 py-1.5 rounded-xl border border-slate-200 text-xs text-slate-700">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Baris Kawalan Status: Promo 3 RM10, Togol Sold Out, dan Padam -->
+            <div class="pt-2.5 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
+              <label class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 cursor-pointer">
+                <input type="checkbox" ${item.isPromo3For10 ? 'checked' : ''}
+                       onchange="updateMenuField(${index}, 'isPromo3For10', this.checked)"
+                       class="rounded text-blue-600 focus:ring-blue-500">
+                <span>Promo Beli 3 RM10</span>
+              </label>
+
+              <div class="flex items-center gap-2">
+                <button type="button" onclick="toggleMenuSoldOut(${index})"
+                        class="px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${item.soldOut ? 'bg-rose-600 text-white shadow-2xs' : 'bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100'}">
+                  ${item.soldOut ? 'Status: Habis (Sold Out)' : 'Status: Tersedia'}
+                </button>
+
+                <button type="button" onclick="deleteMenuItem(${index})" title="Padam Menu"
+                        class="p-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 transition cursor-pointer">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+        list.insertAdjacentHTML("beforeend", block);
+      });
+    }
+
+    async function handleMenuThumbUpload(event, index) {
+      const file = event.target.files[0];
+      if (!file || !appConfig.menu[index]) return;
+      try {
+        const compressed = await compressImageFile(file, 360, 0.75);
+        appConfig.menu[index].image = compressed;
+        renderEditorMenuList();
+        renderMenu();
+        paparNotifikasi("Gambar kecil menu berjaya dikemas kini.");
+      } catch (err) {
+        paparNotifikasi("Gagal memuat naik gambar menu.");
+      }
+    }
+
+    function updateMenuField(index, field, value) {
+      if (!appConfig.menu[index]) return;
+      appConfig.menu[index][field] = value;
+      renderMenu();
+    }
+
+    function toggleMenuSoldOut(index) {
+      if (!appConfig.menu[index]) return;
+      appConfig.menu[index].soldOut = !appConfig.menu[index].soldOut;
+      renderEditorMenuList();
+      renderMenu();
+    }
+
+    function addNewMenuItem() {
+      const newId = "menu_" + Date.now();
+      appConfig.menu.push({
+        id: newId,
+        name: "Menu Baharu",
+        price: 4.00,
+        subtitle: "RM 4.00 / pek",
+        badge: "Baharu",
+        isPromo3For10: false,
+        soldOut: false,
+        image: "https://placehold.co/200x200/DBEAFE/1D4ED8?text=Menu+Baharu"
+      });
+      renderEditorMenuList();
+      renderMenu();
+      paparNotifikasi("Item menu baharu ditambah. Sila ubah nama dan harga di bawah.");
+    }
+
+    function deleteMenuItem(index) {
+      if (appConfig.menu.length <= 1) {
+        paparNotifikasi("Sekurang-kurangnya 1 item menu perlu dikekalkan.");
+        return;
+      }
+      const removed = appConfig.menu.splice(index, 1)[0];
+      if (removed && cart[removed.id]) {
+        delete cart[removed.id];
+      }
+      renderEditorMenuList();
+      renderMenu();
+      persistConfigToLocal();
+      paparNotifikasi("Item menu telah dipadam.");
+    }
+
+    // --- Simpan & Muat Turun Fail HTML Terkini (index.html) ---
+    function saveEditorChanges(showToast = true) {
+      appConfig.store.name = document.getElementById("editStoreName").value.trim() || "Manisan & Dessert";
+      appConfig.store.tagline = document.getElementById("editStoreTagline").value.trim();
+      appConfig.store.scheduleLocation = document.getElementById("editStoreSchedule").value.trim();
+      appConfig.store.whatsapp = document.getElementById("editStoreWhatsapp").value.trim() || "60123456789";
+      appConfig.store.tiktok = document.getElementById("editStoreTiktok").value.trim() || "https://tiktok.com";
+      appConfig.store.instagram = document.getElementById("editStoreInstagram").value.trim() || "https://instagram.com";
+      appConfig.store.logo = tempLogoDataUrl || "";
+
+      const newPin = document.getElementById("editStorePin").value.trim();
+      if (newPin) {
+        appConfig.pin = newPin;
+      }
+
+      persistConfigToLocal();
+      renderStoreHeader();
+      renderGallery();
+      renderMenu();
+
+      if (showToast) {
+        paparNotifikasi("Semua perubahan kedai berjaya disimpan!");
+      }
+    }
+
+    function exportUpdatedHtml() {
+      // 1. Pastikan semua suntingan terkini dalam input disimpan dahulu
+      saveEditorChanges(false);
+
+      try {
+        // 2. Klon keseluruhan DOM semasa
+        const docClone = document.documentElement.cloneNode(true);
+
+        // 3. Kemas kini skrip JSON terbina dalam dengan data terkini
+        const configScript = docClone.querySelector("#store-config-data");
+        if (configScript) {
+          // Elakkan sebarang penutup tag script yang tidak disengajakan
+          const safeJson = JSON.stringify(appConfig, null, 2).replace(/<\/script>/gi, "<\\/script>");
+          configScript.textContent = "\n" + safeJson + "\n  ";
+        }
+
+        // 4. Pastikan semua modal dan toast berada dalam keadaan tertutup dalam fail yang dieksport
+        ["toastBox", "lightboxModal", "pinModal", "editorModal", "codAddressWrapper"].forEach((id) => {
+          const el = docClone.querySelector(`#${id}`);
+          if (el) el.classList.add("hidden");
+        });
+
+        // 5. Kosongkan bekas yang dijana dinamik supaya tidak berlaku penduaan apabila fail dibuka semula
+        ["galleryContainer", "menuContainer", "editorGalleryList", "editorMenuList", "storeLogoContainer"].forEach((id) => {
+          const el = docClone.querySelector(`#${id}`);
+          if (el) el.innerHTML = "";
+        });
+
+        // Tetapkan semula paparan ringkasan harga kepada RM 0.00
+        const qtyEl = docClone.querySelector("#totalQtyDisplay");
+        const priceEl = docClone.querySelector("#totalPriceDisplay");
+        if (qtyEl) qtyEl.textContent = "0";
+        if (priceEl) priceEl.textContent = "RM 0.00";
+
+        // 6. Jana fail HTML lengkap & cetuskan muat turun terus ke peranti pemilik
+        const fullHtml = "<!DOCTYPE html>\n" + docClone.outerHTML;
+        const blob = new Blob([fullHtml], { type: "text/html;charset=utf-8" });
+        const downloadUrl = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = downloadUrl;
+        link.download = "index.html";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(downloadUrl);
+
+        paparNotifikasi("Fail index.html terkini berjaya dimuat turun! Anda boleh terus muat naik ke hosting.");
+      } catch (err) {
+        console.error("Ralat mengeksport HTML:", err);
+        paparNotifikasi("Gagal menjana fail HTML. Sila cuba lagi.");
+      }
+    }
+
+    // =========================================================================
+    // 8. UTILITI MAMPATAN GAMBAR (CANVAS) & NOTIFIKASI TOAST
+    // =========================================================================
+    function compressImageFile(file, maxWidth = 600, quality = 0.75) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const img = new Image();
+          img.onload = function() {
+            let width = img.width;
+            let height = img.height;
+
+            if (width > maxWidth) {
+              height = Math.round((height * maxWidth) / width);
+              width = maxWidth;
+            }
+
+            const canvas = document.createElement("canvas");
+            canvas.width = width;
+            canvas.height = height;
+
+            const ctx = canvas.getContext("2d");
+            // Latar putih untuk gambar PNG lutsinar
+            ctx.fillStyle = "#FFFFFF";
+            ctx.fillRect(0, 0, width, height);
+            ctx.drawImage(img, 0, 0, width, height);
+
+            const compressedDataUrl = canvas.toDataURL("image/jpeg", quality);
+            resolve(compressedDataUrl);
+          };
+          img.onerror = reject;
+          img.src = event.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    let toastTimer;
+    function paparNotifikasi(message) {
+      const box = document.getElementById("toastBox");
+      const msgEl = document.getElementById("toastMessage");
+
+      msgEl.textContent = message;
+      box.classList.remove("hidden");
+      box.classList.add("animate-toast");
+
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        box.classList.add("hidden");
+      }, 3400);
+    }
+
+    function escapeHtml(text) {
+      if (text === null || text === undefined) return "";
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    // =========================================================================
+    // MULAKAN APLIKASI APABILA HALAMAN SIAP DIMUATKAN
+    // =========================================================================
+    window.addEventListener("DOMContentLoaded", () => {
+      loadConfig();
+      renderStoreHeader();
+      renderGallery();
+      renderMenu();
+    });
+  </script>
+</body>
+</html>
